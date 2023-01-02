@@ -54,3 +54,66 @@ let result = intBuilder
   .mod(3) // 1;
   .get(); // -> 1;
 console.log(result);
+
+// ES5 class StringBuilder
+function StringBuilder(value = "") {
+  this.value = value;
+}
+
+StringBuilder.prototype.plus = function (...args) {
+  for (let i = 0; i < args.length; i++) {
+    this.value += args[i];
+  }
+  return this;
+};
+
+StringBuilder.prototype.minus = function (n) {
+  this.value = this.value.slice(0, -n);
+  return this;
+};
+
+StringBuilder.prototype.multiply = function (int) {
+  let str = "";
+  for (let i = 0; i < int; i++) {
+    str += this.value;
+  }
+  this.value = str;
+  return this;
+};
+
+StringBuilder.prototype.divide = function (n) {
+  let k = Math.floor(this.value.length / n);
+  this.value = this.value.slice(0, k);
+  return this;
+};
+
+StringBuilder.prototype.remove = function (str) {
+  this.value = this.value.split(str).join("");
+  return this;
+};
+
+StringBuilder.prototype.sub = function (from, n) {
+  this.value = this.value.slice(from, from + n);
+  return this;
+};
+
+StringBuilder.prototype.get = function () {
+  return this.value;
+};
+
+function StringBuilder(value) {
+  StringBuilder.call(this, value);
+}
+
+StringBuilder.prototype = Object.create(StringBuilder.prototype);
+
+let strBuilder = new StringBuilder("Hello"); // 'Hello';
+let res = strBuilder
+  .plus(" all", "!") // 'Hello all!'
+  .minus(4) // 'Hello '
+  .multiply(3) // 'Hello Hello Hello '
+  .divide(4) // 'Hell';
+  .remove("l") // 'He';
+  .sub(1, 1) // 'e';
+  .get(); // -> 'e';
+console.log(res);
